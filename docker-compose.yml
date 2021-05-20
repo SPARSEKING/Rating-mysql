@@ -1,0 +1,40 @@
+version: "3"
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+    main:
+      container_name: main
+      build: .
+      command: npm run dev
+      restart: unless-stopped
+      ports: 
+        - 3000:3000
+      environment: 
+        - PORT=3000
+        - DB_NAME=mysql
+        - DB_ROOT_NAME=root
+        - DB_PASSWORD=Bishok1044
+        - DB_HOSTNAME=db
+      depends_on: 
+        - db
+
+    db:
+      image: mysql
+      container_name: db
+      environment:
+        - MYSQL_USER=admin
+        - MYSQL_PASSWORD=Bishok1044
+        - MYSQL_DATABASE=mysql
+        - MYSQL_ROOT_PASSWORD=Bishok1044
+      expose: 
+        - 3306
+    
+    adminer:
+      image: adminer
+      ports:
+        - 8080:8080
+
+          
